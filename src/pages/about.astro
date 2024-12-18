@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About - DataBlog">
+	<main>
+		<div class="about-container">
+			<h1>About DataBlog</h1>
+			<div class="content">
+				<p>
+					Welcome to DataBlog, your go-to resource for data engineering insights and best practices. We're passionate about sharing knowledge and experiences in the world of data engineering, helping professionals and enthusiasts alike navigate the complex landscape of modern data architecture.
+				</p>
+				
+				<h2>Our Mission</h2>
+				<p>
+					Our mission is to provide high-quality, practical content that helps data engineers and architects build better data systems. We focus on real-world applications, best practices, and emerging trends in the data engineering space.
+				</p>
+
+				<h2>Topics We Cover</h2>
+				<ul>
+					<li>Data Pipeline Design and Implementation</li>
+					<li>ETL/ELT Processes</li>
+					<li>Data Warehousing</li>
+					<li>Big Data Technologies</li>
+					<li>Stream Processing</li>
+					<li>Data Architecture</li>
+					<li>Cloud Data Solutions</li>
+				</ul>
+
+				<h2>Get in Touch</h2>
+				<p>
+					Have questions or suggestions? We'd love to hear from you! Reach out to us at <a href="mailto:contact@datablog.com">contact@datablog.com</a>
+				</p>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.about-container {
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 4rem 2rem;
+	}
+	h1 {
+		font-size: 2.5rem;
+		color: var(--text-main);
+		margin-bottom: 2rem;
+	}
+	h2 {
+		font-size: 1.75rem;
+		color: var(--text-main);
+		margin: 2rem 0 1rem;
+	}
+	.content {
+		font-size: 1.1rem;
+		line-height: 1.7;
+		color: var(--text-secondary);
+	}
+	p {
+		margin-bottom: 1.5rem;
+	}
+	ul {
+		list-style-type: none;
+		padding: 0;
+		margin: 1.5rem 0;
+	}
+	li {
+		padding: 0.5rem 0;
+		padding-left: 1.5rem;
+		position: relative;
+	}
+	li:before {
+		content: "•";
+		color: var(--primary);
+		font-weight: bold;
+		position: absolute;
+		left: 0;
+	}
+	a {
+		color: var(--primary);
+		text-decoration: none;
+	}
+	a:hover {
+		text-decoration: underline;
+	}
+</style>

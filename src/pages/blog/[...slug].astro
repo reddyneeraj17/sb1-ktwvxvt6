@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.slug }, 
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<Layout title={`${entry.data.title} - DataBlog`}>
+  <main>
+    <article class="blog-post">
+      <header class="post-header">
+        <div class="container">
+          <span class="post-category">{entry.data.category}</span>
+          <h1>{entry.data.title}</h1>
+          <div class="post-meta">
+            <span class="post-author">By {entry.data.author}</span>
+            <span class="post-date">{new Date(entry.data.publishDate).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}</span>
+          </div>
+        </div>
+      </header>
+      
+      <div class="post-content container">
+        <Content />
+      </div>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .blog-post {
+    margin-bottom: 4rem;
+  }
+  .post-header {
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    color: white;
+    padding: 4rem 0;
+    margin-bottom: 2rem;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .post-category {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+  h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .post-meta {
+    font-size: 0.875rem;
+    opacity: 0.9;
+  }
+  .post-author {
+    margin-right: 1rem;
+  }
+  .post-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-main);
+  }
+  .post-content h2 {
+    font-size: 1.8rem;
+    margin: 2rem 0 1rem;
+    color: var(--text-main);
+  }
+  .post-content p {
+    margin-bottom: 1.5rem;
+  }
+  .post-content ul {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+  .post-content li {
+    margin-bottom: 0.5rem;
+  }
+  @media (max-width: 768px) {
+    .post-header {
+      padding: 3rem 0;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+  }
+</style>

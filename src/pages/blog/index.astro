@@ -1,0 +1,208 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => 
+  new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+);
+---
+
+<Layout title="Blog - DataBlog">
+	<main>
+		<div class="blog-container">
+			<header class="blog-header">
+				<h1>Data Engineering Blog</h1>
+				<p>Explore our latest articles on data engineering, ETL processes, and modern data architecture.</p>
+			</header>
+
+			<div class="categories">
+				<button class="category-btn active">All</button>
+				<button class="category-btn">Data Pipelines</button>
+				<button class="category-btn">ETL</button>
+				<button class="category-btn">Architecture</button>
+				<button class="category-btn">Best Practices</button>
+			</div>
+
+			<div class="blog-grid">
+				{sortedPosts.map(post => (
+				<article class="blog-post" key={post.slug}>
+					<div class="post-image"></div>
+					<div class="post-content">
+						<div class="post-meta">
+							<span class="post-category">{post.data.category}</span>
+							<span class="post-date">{new Date(post.data.publishDate).toLocaleDateString('en-US', {
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric'
+							})}</span>
+						</div>
+						<h2>{post.data.title}</h2>
+						<p>{post.data.description}</p>
+						<a href={`/blog/${post.slug}`} class="read-more">Read More →</a>
+					</div>
+				</article>
+				))}
+			</div>
+
+			<div class="pagination">
+				<button class="pagination-btn" disabled>← Previous</button>
+				<div class="page-numbers">
+					<span class="page-number active">1</span>
+					<span class="page-number">2</span>
+					<span class="page-number">3</span>
+				</div>
+				<button class="pagination-btn">Next →</button>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.blog-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 4rem 2rem;
+	}
+	.blog-header {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+	.blog-header h1 {
+		font-size: 2.5rem;
+		color: var(--text-main);
+		margin-bottom: 1rem;
+	}
+	.blog-header p {
+		font-size: 1.2rem;
+		color: var(--text-secondary);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+	.categories {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin-bottom: 3rem;
+		justify-content: center;
+	}
+	.category-btn {
+		background: none;
+		border: 1px solid #e5e7eb;
+		padding: 0.5rem 1rem;
+		border-radius: 20px;
+		font-size: 0.875rem;
+		color: var(--text-secondary);
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+	.category-btn:hover {
+		border-color: var(--primary);
+		color: var(--primary);
+	}
+	.category-btn.active {
+		background: var(--primary);
+		color: white;
+		border-color: var(--primary);
+	}
+	.blog-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 2rem;
+		margin-bottom: 3rem;
+	}
+	.blog-post {
+		background: white;
+		border-radius: 8px;
+		overflow: hidden;
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+		transition: transform 0.2s;
+	}
+	.blog-post:hover {
+		transform: translateY(-4px);
+	}
+	.post-image {
+		height: 200px;
+		background: var(--primary);
+		opacity: 0.8;
+	}
+	.post-content {
+		padding: 1.5rem;
+	}
+	.post-meta {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 1rem;
+		font-size: 0.875rem;
+		color: var(--text-secondary);
+	}
+	.post-category {
+		color: var(--primary);
+		font-weight: 500;
+	}
+	.blog-post h2 {
+		margin: 0;
+		margin-bottom: 1rem;
+		font-size: 1.25rem;
+		color: var(--text-main);
+		line-height: 1.4;
+	}
+	.blog-post p {
+		margin: 0;
+		margin-bottom: 1.5rem;
+		color: var(--text-secondary);
+		line-height: 1.6;
+	}
+	.read-more {
+		color: var(--primary);
+		text-decoration: none;
+		font-weight: 500;
+	}
+	.read-more:hover {
+		color: var(--primary-dark);
+	}
+	.pagination {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
+	}
+	.pagination-btn {
+		background: none;
+		border: 1px solid #e5e7eb;
+		padding: 0.5rem 1rem;
+		border-radius: 8px;
+		color: var(--text-secondary);
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+	.pagination-btn:not(:disabled):hover {
+		border-color: var(--primary);
+		color: var(--primary);
+	}
+	.pagination-btn:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+	.page-numbers {
+		display: flex;
+		gap: 0.5rem;
+	}
+	.page-number {
+		width: 2rem;
+		height: 2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 4px;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+	.page-number:hover {
+		background: #f3f4f6;
+	}
+	.page-number.active {
+		background: var(--primary);
+		color: white;
+	}
+</style>
